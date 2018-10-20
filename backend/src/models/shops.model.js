@@ -8,11 +8,21 @@ module.exports = function(app) {
     Schema
   } = mongooseClient;
   const shops = new Schema({
-    text: {
+    userId: {
       type: String,
       required: true
     },
-
+    shopName:{
+      type: String,
+      required: true
+    },
+    qrCode:{
+      type: String
+    },
+    balance:{
+      type: Number,
+      default: 0
+    }
   }, {
     timestamps: true
   });
