@@ -2,29 +2,26 @@
 //
 // See http://mongoosejs.com/docs/models.html
 // for more of what you can do here.
-module.exports = function(app) {
+module.exports = function (app) {
   const mongooseClient = app.get('mongooseClient');
   const {
-    Schema
+    Schema,
   } = mongooseClient;
   const shops = new Schema({
     userId: {
       type: String,
-      required: true
+      required: true,
     },
-    shopName:{
+    shopName: {
       type: String,
-      required: true
+      required: true,
     },
-    qrCode:{
-      type: String
+    qrCode: {
+      type: String,
+      required: true,
     },
-    balance:{
-      type: Number,
-      default: 0
-    }
   }, {
-    timestamps: true
+    timestamps: true,
   });
 
   return mongooseClient.model('shops', shops);
