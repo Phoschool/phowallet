@@ -14,6 +14,9 @@ module.exports = function (app) {
       shopName: {
         type: String,
       },
+      shopImage: {
+        type: String,
+      },
       qrCode: {
         type: String,
         required: true,
