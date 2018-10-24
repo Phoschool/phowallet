@@ -1,5 +1,6 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
 const { hashPassword, protect } = require('@feathersjs/authentication-local').hooks;
+const { createQrCode } = require('./hook.functions');
 
 module.exports = {
   before: {
@@ -20,7 +21,7 @@ module.exports = {
     ],
     find: [],
     get: [],
-    create: [],
+    create: [createQrCode()],
     update: [],
     patch: [],
     remove: [],

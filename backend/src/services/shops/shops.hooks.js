@@ -6,7 +6,9 @@ module.exports = {
     all: [authenticate('jwt')],
     find: [],
     get: [],
-    create: [createQrcode()],
+    create: [
+      // createQrcode()
+    ],
     update: [],
     patch: [],
     remove: [],
