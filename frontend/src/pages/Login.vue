@@ -3,20 +3,51 @@
     <NavbarComponent/>
     <div class="container">
       <img src="../assets/wallet.svg">
-      <p>Pho Wallet</p>
+      <p class="title">Pho Wallet</p>
       <div class="form">
-        <input type="text" placeholder="username">
-        <input type="text" placeholder="password"/>
-        <button class="btn">Login</button>
+        <input type="text" placeholder="username" v-model="username">
+        <input type="password" placeholder="password" v-model="password">
+        <p class="error" v-if="error">Invalid login</p>
+        <button class="btn" @click="login">Login</button>
+        <p class="registration">No account yet? <a>Sign up</a></p>
       </div>
     </div>
   </div>
 </template>
 <script>
 import NavbarComponent from "@/components/Navbar";
+import feathers from "@/feathers";
 export default {
   components: {
     NavbarComponent
+  },
+  data() {
+    return {
+      username: "",
+      password: "",
+      error: false
+    };
+  },
+  methods: {
+    login: function() {
+      if (this.username.trim() !== "" || this.password.trim() !== "") {
+        feathers
+          .authenticate({
+            strategy: "local",
+            email: this.username,
+            password: this.password
+          })
+          .then(() => {
+            // this.$router.push("/ss");
+          })
+          .catch(error => {
+            console.log(error);
+            this.error = true;
+          });
+      } else {
+        this.error = true;
+      }
+    }
   }
 };
 </script>
@@ -41,8 +72,8 @@ img {
   margin-right: auto;
   width: 30%;
 }
-p {
-  font-size: 40px;
+.title {
+  font-size: 30px;
   text-align: center;
   margin-top: 10px;
 }
@@ -66,5 +97,19 @@ input {
   width: 90vw;
   margin-left: 5vw;
   margin-right: 5vw;
+}
+
+.registration {
+  font-size: 15;
+  text-align: center;
+}
+
+.registration > a {
+  color: #ff9800;
+}
+.error {
+  color: red;
+  font-size: 20px;
+  text-align: center;
 }
 </style>
