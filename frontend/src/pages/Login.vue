@@ -38,7 +38,7 @@ export default {
             password: this.password
           })
           .then(() => {
-            // this.$router.push("/ss");
+            this.$router.push("/scan");
           })
           .catch(error => {
             console.log(error);

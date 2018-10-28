@@ -15,7 +15,7 @@ module.exports.createPayment = function () {
         });
       } catch (e) {
         console.log(e);
-        throw new Error('cannot create payent ');
+        throw new Error('cannot create payment ');
       }
     } else {
       throw new Error('money not enough');

@@ -5,7 +5,7 @@ module.exports.createQrcode = function () {
     console.log(hook.data);
     try {
       const fileName = Date.now();
-      await qrCode.toFile(`./images/${fileName}.png`, hook.data.shopName, {
+      await qrCode.toFile(`./images/${fileName}.png`, hook.result._id, {
         color: {
           dark: '#000',
           light: '#FFF',

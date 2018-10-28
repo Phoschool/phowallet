@@ -4,7 +4,8 @@
     <div class="center">
       <p class="title">Scan QrCode</p>
     </div>
-    <!-- <qrcode-reader @decode="onDecode" :paused="paused"></qrcode-reader> -->
+    <qrcode-reader @decode="onDecode" :paused="paused"></qrcode-reader>
+    <p class="error" v-if="error">Invalid qr code scan again!!</p>
   </div>
 </template>
 <script>
@@ -16,18 +17,37 @@ export default {
   },
   data() {
     return {
-      paused: false
+      paused: false,
+      error: false
     };
   },
   methods: {
-    onDecode(content) {
-      console.log(content);
-      this.paused = true;
+    onDecode(shopQrCode) {
+      feathers.authenticate().then(async () => {
+        try {
+          const { data } = await feathers.service("shops").find({
+            query: {
+              userId: shopQrCode,
+              $limit: 1
+            }
+          });
+          console.log(data[0]);
+          this.paused = true;
+        } catch (e) {
+          console.log(e);
+          this.error = true;
+        }
+      });
     }
   }
 };
 </script>
 <style scoped>
+.error {
+  color: red;
+  font-size: 20px;
+  text-align: center;
+}
 .title {
   border-bottom: 3px solid #ff9800;
   text-align: center;
