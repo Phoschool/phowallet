@@ -16,6 +16,7 @@
       <option value="merchant">Merchant</option>
     </select>
     <input type="text" placeholder="shopName" v-model="shopName" v-if="permission == 'merchant'">
+    <input type="text" placeholder="Student Id" v-model="studentId" v-if="permission == 'student'">
     <input type="text" placeholder="username" v-model="username">
     <br>
     <input type="password" placeholder="password" v-model="password">
@@ -39,6 +40,7 @@ export default {
       imageURL: "",
       shopName: "",
       permission: "",
+      studentId: "",
       error: false
     };
   },
@@ -63,7 +65,8 @@ export default {
             password: this.password,
             imageURL: fullImage,
             permission: this.permission,
-            shopName: this.shopName
+            shopName: this.shopName,
+            studentId: this.studentId
           });
           this.$router.push("/");
         } else {
@@ -71,7 +74,8 @@ export default {
             email: this.username,
             password: this.password,
             permission: this.permission,
-            shopeName: this.shopName
+            shopName: this.shopName,
+            studentId: this.studentId
           });
           this.$router.push("/");
         }

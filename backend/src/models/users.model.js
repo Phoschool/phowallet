@@ -13,6 +13,9 @@ module.exports = function (app) {
       password: {
         type: String,
       },
+      studentId: {
+        type: String,
+      },
       shopName: {
         type: String,
         default: '',
@@ -26,7 +29,7 @@ module.exports = function (app) {
       permission: {
         type: String,
         required: true,
-        enum: ['student', 'merchant'],
+        enum: ['student', 'merchant', 'admin'],
       },
       balance: {
         type: Number,
