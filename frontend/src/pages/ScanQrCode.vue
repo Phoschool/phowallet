@@ -1,6 +1,6 @@
 <template>
   <div>
-    <NavbarComponent/>
+    <NavbarComponent loged :balance="balance" :profileImage="profileImage"/>
     <div class="center">
       <p class="title">Scan QrCode</p>
     </div>
@@ -10,6 +10,7 @@
 </template>
 <script>
 import NavbarComponent from "@/components/Navbar";
+import JWT from "jsonwebtoken";
 import feathers from "@/feathers";
 export default {
   components: {
@@ -18,20 +19,35 @@ export default {
   data() {
     return {
       paused: false,
-      error: false
+      error: false,
+      balance: 0,
+      profileImage: ""
     };
+  },
+  created() {
+    feathers
+      .authenticate()
+      .then(async ({ accessToken }) => {
+        const { userId } = JWT.decode(accessToken);
+        localStorage.setItem("userId", userId);
+        const userInfo = await feathers.service("users").get(userId);
+        this.profileImage = userInfo.imageURL;
+        this.balance = userInfo.balance;
+      })
+      .catch(() => {
+        this.$router.push("/");
+      });
   },
   methods: {
     onDecode(shopQrCode) {
       feathers.authenticate().then(async () => {
         try {
-          const { data } = await feathers.service("shops").find({
-            query: {
-              userId: shopQrCode,
-              $limit: 1
-            }
-          });
-          console.log(data[0]);
+          const data = await feathers.service("users").get(shopQrCode);
+          if (data) {
+            this.$router.push(`/payment/${shopQrCode}`);
+          } else {
+            this.error = true;
+          }
           this.paused = true;
         } catch (e) {
           console.log(e);

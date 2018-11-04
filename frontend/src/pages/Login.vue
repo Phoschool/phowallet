@@ -9,7 +9,7 @@
         <input type="password" placeholder="password" v-model="password">
         <p class="error" v-if="error">Invalid login</p>
         <button class="btn" @click="login">Login</button>
-        <p class="registration">No account yet? <a>Sign up</a></p>
+        <p class="registration">No account yet? <router-link to="/register">Sign up</router-link></p>
       </div>
     </div>
   </div>

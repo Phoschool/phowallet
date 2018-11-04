@@ -1,29 +1,32 @@
 <template>
 <div>
-  <NavbarComponent/>
+  <NavbarComponent />
   <div class="container">
     <div class="placheholder" v-if="imageURL === ''"></div>
-    <img :src="imageURL" v-if="imageURL !== ''" class="userProfile"/>
+    <img :src="imageURL" v-if="imageURL !== ''" class="userProfile" />
     <div class="image-upload">
       <label for="file-input">
-        <img src="../assets/photo-camera.png"/>
-    </label>
-      <input type="file" id="file-input" accept="image/*" @change="readUrl($event)"/>
+        <img src="../assets/photo-camera.png" />
+      </label>
+      <input type="file" id="file-input" accept="image/*" @change="readUrl($event)">
     </div>
-    <select>
-  <option value="" disabled selected>I'm</option>
-  <option value="student">Student</option>
-  <option value="merchange">Merchant</option>
-</select>
+    <select v-model="permission">
+      <option value="" disabled selected>I'm</option>
+      <option value="student">Student</option>
+      <option value="merchant">Merchant</option>
+    </select>
+    <input type="text" placeholder="shopName" v-model="shopName" v-if="permission == 'merchant'">
     <input type="text" placeholder="username" v-model="username">
     <br>
     <input type="password" placeholder="password" v-model="password">
-<button class="btn" @click="login">Login</button>
+    <button class="btn" @click="registration">Register</button>
+    <h3 style="color: red" v-if="error">Invalid Registration</h3>
   </div>
 </div>
 </template>
 <script>
 import NavbarComponent from "@/components/Navbar";
+import feathers from "@/feathers";
 export default {
   components: {
     NavbarComponent
@@ -32,7 +35,11 @@ export default {
     return {
       username: "",
       password: "",
-      imageURL: ""
+      permission: "",
+      imageURL: "",
+      shopName: "",
+      permission: "",
+      error: false
     };
   },
   methods: {
@@ -43,6 +50,34 @@ export default {
           this.imageURL = event.target.result;
         };
         reader.readAsDataURL(event.target.files[0]);
+      }
+    },
+    registration: async function() {
+      try {
+        if (this.imageURL !== "") {
+          const { fullImage } = await feathers.service("uploads").create({
+            uri: this.imageURL
+          });
+          await feathers.service("users").create({
+            email: this.username,
+            password: this.password,
+            imageURL: fullImage,
+            permission: this.permission,
+            shopName: this.shopName
+          });
+          this.$router.push("/");
+        } else {
+          await feathers.service("users").create({
+            email: this.username,
+            password: this.password,
+            permission: this.permission,
+            shopeName: this.shopName
+          });
+          this.$router.push("/");
+        }
+      } catch (e) {
+        console.log(e);
+        this.error = true;
       }
     }
   }
@@ -62,6 +97,7 @@ select {
   width: 90%;
   font-size: 20px;
 }
+
 .btn {
   background-color: #ff9800;
   border-color: #ff9800;
@@ -75,6 +111,7 @@ select {
   color: white;
   font-size: 20px;
 }
+
 input {
   border-style: solid;
   border-width: 1px;
@@ -86,9 +123,11 @@ input {
   padding-left: 25px;
   margin-top: 5%;
 }
+
 .image-upload > input {
   display: none;
 }
+
 .image-upload img {
   margin-top: 10px;
   width: 40px;
@@ -97,9 +136,14 @@ input {
   margin-right: auto;
   display: block;
 }
+
 .container {
   margin-top: 10px;
+  width: 90vw;
+  margin-left: auto;
+  margin-right: auto;
 }
+
 .userProfile {
   width: 90px;
   height: 90px;
@@ -108,6 +152,7 @@ input {
   margin-right: auto;
   border-radius: 50%;
 }
+
 .placheholder {
   background-color: rgb(181, 181, 181);
   width: 90px;

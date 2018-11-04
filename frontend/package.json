@@ -13,6 +13,7 @@
     "@feathersjs/authentication-client": "^1.0.6",
     "@feathersjs/feathers": "^3.2.3",
     "@feathersjs/socketio-client": "^1.1.4",
+    "jsonwebtoken": "^8.3.0",
     "socket.io-client": "^2.1.1",
     "vue": "^2.5.2",
     "vue-qrcode-reader": "^1.2.2",
