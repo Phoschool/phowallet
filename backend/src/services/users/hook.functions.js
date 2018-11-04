@@ -12,8 +12,7 @@ module.exports.createQrCode = function () {
           },
           width: 500,
         });
-        const data = await hook.app.service('shops').create({
-          userId: hook.result._id,
+        const data = await hook.app.service('users').patch(hook.result._id, {
           qrCode: `http://localhost:3030/images/${fileName}.png`,
         });
         hook.result.qrCode = data.qrCode;

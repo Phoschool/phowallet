@@ -1,7 +1,7 @@
 module.exports.createPayment = function () {
   return async function (hook) {
     const userInfo = await hook.app.service('users').get(hook.data.userId);
-    if (userInfo.balance > hook.data.priceTotal) {
+    if (userInfo.balance >= hook.data.priceTotal) {
       try {
         await hook.app.service('users').patch(hook.data.userId, {
           $inc: {
