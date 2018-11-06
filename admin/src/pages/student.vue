@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h3 style="padding: 30px;text-align:center">Merchant</h3>
+    <h3 style="padding: 30px;text-align:center">Students</h3>
     <table class="table">
   <thead>
     <tr>
