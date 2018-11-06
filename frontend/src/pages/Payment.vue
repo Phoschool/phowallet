@@ -30,6 +30,11 @@ export default {
     };
   },
   created() {
+    feathers.service("users").on("patched", data => {
+      if (data._id == localStorage.getItem("userId")) {
+        this.balance = data.balance;
+      }
+    });
     feathers
       .authenticate()
       .then(async ({ accessToken }) => {
