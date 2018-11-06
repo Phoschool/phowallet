@@ -39,6 +39,11 @@ export default {
     };
   },
   created() {
+    feathers.service("users").on("created", data => {
+      if (data.permission === "student") {
+        this.listMerchants.push(data);
+      }
+    });
     feathers.service("users").on("patched", data => {
       if (data.permission === "student") {
         const index = this.listMerchants.findIndex(value => {

@@ -48,7 +48,6 @@ export default {
           } else {
             this.error = true;
           }
-          this.paused = true;
         } catch (e) {
           console.log(e);
           this.error = true;
